@@ -1,0 +1,1 @@
+json.array! @res_groups, partial: 'res_groups/res_group', as: :res_group

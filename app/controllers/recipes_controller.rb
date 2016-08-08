@@ -1,5 +1,6 @@
 class RecipesController < ApplicationController
   before_action :set_recipe, only: [:show, :edit, :update, :destroy]
+  before_action :set_res_groups, only: [:new, :create, :edit, :update]
 
   # GET /recipes
   # GET /recipes.json
@@ -65,6 +66,10 @@ class RecipesController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_recipe
       @recipe = Recipe.find(params[:id])
+    end
+
+    def set_res_groups
+      @res_groups = ResGroup.this_user_groups_pluck('user', :name, :id) #add a user as a parameter here
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

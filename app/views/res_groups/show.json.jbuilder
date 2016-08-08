@@ -1,0 +1,1 @@
+json.partial! "res_groups/res_group", res_group: @res_group
