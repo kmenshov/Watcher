@@ -1,0 +1,25 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Res Yields</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Content</th>
+      <th>Recipe</th>
+      <th>Read?</th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @res_yields.each do |res_yield| %>
+      <tr>
+        <td><%= res_yield.content %></td>
+        <td><%= res_yield.recipe.name %></td>
+        <td><%= res_yield.read %></td>
+        <td></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

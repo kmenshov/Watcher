@@ -1,4 +1,10 @@
 Rails.application.routes.draw do
+  get 'res_yields/index'
+
+  get 'res_yields/show'
+
+  #get 'res_yields/rewatch'
+
   resources :res_groups
   resources :recipes
   # The priority is based upon order of creation: first created -> highest priority.

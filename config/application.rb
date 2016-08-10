@@ -23,6 +23,9 @@ module Watcher
     # Do not swallow errors in after_commit/after_rollback callbacks.
     config.active_record.raise_in_transactional_callbacks = true
 
+
+    #------------------------- My Initializers -------------------------
     config.res_group_reserved_names = ['none']
+    #-------------------------------------------------------------------
   end
 end

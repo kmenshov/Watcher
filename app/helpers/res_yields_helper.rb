@@ -1,0 +1,2 @@
+module ResYieldsHelper
+end

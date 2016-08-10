@@ -5,3 +5,16 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
+
+yields_list = [
+  [ "Germany", 0 ],
+  [ "France", 0 ],
+  [ "Belgium", 1 ],
+  [ "Netherlands", 1 ]
+]
+
+ress = Recipe.all
+
+yields_list.each do |content, res_n|
+  ResYield.create( content: content, read: false, recipe: ress[res_n] )
+end
