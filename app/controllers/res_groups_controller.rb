@@ -1,7 +1,8 @@
 class ResGroupsController < ApplicationController
-  before_action :set_res_group, only: [:show, :edit, :update, :destroy]
-
   rescue_from ActiveRecord::ReadOnlyRecord, with: :read_only_record
+  rescue_from (ActiveRecord::RecordNotFound) { |e| redirect_to res_groups_url }
+
+  before_action :set_res_group, only: [:show, :edit, :update, :destroy]
 
   # GET /res_groups
   # GET /res_groups.json
@@ -21,6 +22,7 @@ class ResGroupsController < ApplicationController
 
   # GET /res_groups/1/edit
   def edit
+    read_only_record if @res_group.readonly?
   end
 
   # POST /res_groups
@@ -78,7 +80,7 @@ class ResGroupsController < ApplicationController
     def read_only_record
       respond_to do |format|
         format.html { redirect_to res_groups_url, notice: 'This group can not be modified.' }
-        format.json { render json: @res_group.errors, status: :unprocessable_entity }
+        #format.json { render json: @res_group.errors, status: :unprocessable_entity }
       end
     end
 end

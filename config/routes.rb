@@ -1,12 +1,17 @@
 Rails.application.routes.draw do
-  get 'res_yields/index'
-
-  get 'res_yields/show'
 
   #get 'res_yields/rewatch'
 
   resources :res_groups
+
   resources :recipes
+  get 'res_groups/:res_group_id/recipes', to: 'recipes#index', as: :res_group_recipes
+
+  resources :res_yields, only: [:index, :show]
+  get 'recipes/:recipe_id/res_yields', to: 'res_yields#index', as: :recipe_res_yields
+  get 'res_groups/:res_group_id/res_yields', to: 'res_yields#index', as: :res_group_res_yields
+
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
