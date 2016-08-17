@@ -12,9 +12,9 @@ class ResGroup < ActiveRecord::Base
     ResGroup.find_by_name(Rails.configuration.res_group_reserved_names[0])
   end
 
-  def self.available_names
+  def self.available_groups
   #TODO: add a user constraint here
-    ResGroup.all.pluck(:name)
+    ResGroup.all
   end
 
 

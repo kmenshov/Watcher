@@ -24,8 +24,8 @@
     <%= f.text_field :content %>
   </div>
   <div class="field">
-    <%= f.label :res_group_name, "Group Name" %><br>
-    <%= f.select(:res_group_name, @res_groups_list) %>
+    <%= f.label :res_group_id, "Group Name" %><br>
+    <%= f.select :res_group_id, @res_groups_list %>
   </div>
   <div class="actions">
     <%= f.submit %>

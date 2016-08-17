@@ -7,10 +7,19 @@
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
 yields_list = [
-  [ "Germany", 0 ],
-  [ "France", 0 ],
-  [ "Belgium", 1 ],
-  [ "Netherlands", 1 ]
+  [ "Content 1", 0 ],
+  [ "Content 2", 1 ],
+  [ "Content 3", 2 ],
+  [ "Content 4", 3 ],
+  [ "Content 5", 4 ],
+  [ "Content 6", 4 ],
+  [ "Content 7", 3 ],
+  [ "Content 8", 2 ],
+  [ "Content 9", 1 ],
+  [ "Content 10", 0 ],
+  [ "Content 11", 1 ],
+  [ "Content 12", 0 ],
+  [ "Content 13", 1 ]
 ]
 
 ress = Recipe.all

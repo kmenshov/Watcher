@@ -2,11 +2,24 @@
 
 <h1>Listing Res Yields</h1>
 
+<%= form_tag(filter_yields_by_group_path) do %>
+  <%= label_tag(:res_group_id, "Filter by group:") %>
+  <%= select_tag(:res_group_id, options_for_select(@res_groups_list)) %>
+  <%= submit_tag("Switch") %>
+<% end %>
+
+<%= form_tag(filter_yields_by_recipe_path) do %>
+  <%= label_tag(:recipe_id, "Filter by recipe:") %>
+  <%= select_tag(:recipe_id, options_for_select(@recipes_list)) %>
+  <%= submit_tag("Switch") %>
+<% end %>
+
 <table>
   <thead>
     <tr>
-      <th>Content</th>
+      <th>Group</th>
       <th>Recipe</th>
+      <th>Content</th>
       <th>Read?</th>
       <th></th>
     </tr>
@@ -15,8 +28,9 @@
   <tbody>
     <% @res_yields.each do |res_yield| %>
       <tr>
-        <td><%= res_yield.content %></td>
+        <td><%= res_yield.recipe.res_group.name %></td>
         <td><%= res_yield.recipe.name %></td>
+        <td><%= res_yield.content %></td>
         <td><%= res_yield.read %></td>
         <td><%= link_to 'Show', res_yield %></td>
       </tr>

@@ -3,20 +3,23 @@ class Recipe < ActiveRecord::Base
   has_many :res_yields
 
   validates :name, :url, :content, presence: true
-  #validates :res_group_id, inclusion: { in: ResGroup.list_for('user', :id) } #add a user as a parameter here
+  validate :ensure_proper_group_id
 
-
-  def res_group_name
-    self.res_group ? self.res_group.name : ResGroup.default_group.name
-  end
-
-  def res_group_name=(name)
-    self.res_group_id = if ResGroup.available_names.include? name
-      #TODO: add user constraint here (two different users may have the same names for their groups)
-      ResGroup.find_by_name(name).id
+  def self.available_recipes(res_group_id: nil)
+  #TODO: add a user constraint here
+    if res_group_id
+      ResGroup.find(res_group_id).recipes
     else
-      ResGroup.default_group.id
+      Recipe.all
     end
   end
+
+  private
+
+    def ensure_proper_group_id
+      unless ResGroup.available_groups.ids.include? self.res_group_id
+        self.res_group_id = ResGroup.default_group.id
+      end
+    end
 
 end

@@ -1,19 +1,23 @@
 class RecipesController < ApplicationController
   rescue_from (ActiveRecord::RecordNotFound) { |e| redirect_to recipes_url }
 
+  include FetchGroups
+
   before_action :set_recipe, only: [:show, :edit, :update, :destroy]
 
   #'create' and 'update' are needed too in case of redirections after failed validations:
-  before_action :set_res_groups_list, only: [:new, :create, :edit, :update]
+  before_action only: [:new, :edit, :create, :update] { set_res_groups_list }
+  before_action only: [:index, :res_group_recipes] { set_res_groups_list(add_all: true) }
 
   # GET /recipes
   # GET /recipes.json
   def index
-    if params[:res_group_id].to_i != 0
-      @recipes = ResGroup.find(params[:res_group_id]).recipes
-    else
-      @recipes = Recipe.all
-    end
+    @recipes = Recipe.all
+  end
+
+  def res_group_recipes
+    @recipes = Recipe.available_recipes(res_group_id: params[:res_group_id])
+    render :index
   end
 
   # GET /recipes/1
@@ -76,12 +80,8 @@ class RecipesController < ApplicationController
       @recipe = Recipe.find(params[:id])
     end
 
-    def set_res_groups_list
-      @res_groups_list = ResGroup.available_names
-    end
-
     # Never trust parameters from the scary internet, only allow the white list through.
     def recipe_params
-      params.require(:recipe).permit(:name, :url, :content, :res_group_name)
+      params.require(:recipe).permit(:name, :url, :content, :res_group_id)
     end
 end

@@ -2,6 +2,12 @@
 
 <h1>Listing Recipes</h1>
 
+<%= form_tag(filter_recipes_by_group_path) do %>
+  <%= label_tag(:res_group_id, "Filter by group:") %>
+  <%= select_tag(:res_group_id, options_for_select(@res_groups_list)) %>
+  <%= submit_tag("Switch") %>
+<% end %>
+
 <table>
   <thead>
     <tr>
