@@ -6,7 +6,7 @@ class ResYieldsController < ApplicationController
   before_action except: [:show, :rewatch] { set_res_groups_list(add_all: true) }
 
   def index
-    @res_yields = ResYield.all
+    @res_yields = ResYield.order(created_at: :desc)
     set_recipes_list(add_all: true)
   end
 

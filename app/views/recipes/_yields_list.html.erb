@@ -1,8 +1,5 @@
-<hr />
-
-<% @recipe.see_yields.each.with_index(1) do |res_yield, index| %>
-  <h1><%= index %></h1>
-  <%= res_yield %>
-  <br />
-  <%= res_yield.html_safe %>
-<% end %>
+<%  if Rails.configuration.res_yields_debug %>
+      <%= render 'yields_list_w_debug' %>
+<%  else %>
+      <%= render 'yields_list_clean' %>
+<%  end %>

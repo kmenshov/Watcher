@@ -4,4 +4,6 @@
 
 <%= link_to 'Back', recipes_path %>
 
-<%= render 'yields_list' if params[:preview_button] %>
+<% if params[:preview_button] %>
+    <%= render 'yields_list' %>
+<% end %>
