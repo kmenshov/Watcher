@@ -40,13 +40,14 @@ class RecipesController < ApplicationController
     @recipe = Recipe.new(recipe_params)
 
     respond_to do |format|
-      if @recipe.save
+      if params[:preview_button]
+        @recipe.valid?
+      elsif @recipe.save
         format.html { redirect_to @recipe, notice: 'Recipe was successfully created.' }
         format.json { render :show, status: :created, location: @recipe }
-      else
-        format.html { render :new }
-        format.json { render json: @recipe.errors, status: :unprocessable_entity }
       end
+      format.html { render :new }
+      format.json { render json: @recipe.errors, status: :unprocessable_entity }
     end
   end
 
@@ -54,13 +55,15 @@ class RecipesController < ApplicationController
   # PATCH/PUT /recipes/1.json
   def update
     respond_to do |format|
-      if @recipe.update(recipe_params)
+      if params[:preview_button]
+        @recipe.assign_attributes(recipe_params)
+        @recipe.valid?
+      elsif @recipe.update(recipe_params)
         format.html { redirect_to @recipe, notice: 'Recipe was successfully updated.' }
         format.json { render :show, status: :ok, location: @recipe }
-      else
-        format.html { render :edit }
-        format.json { render json: @recipe.errors, status: :unprocessable_entity }
       end
+      format.html { render :edit }
+      format.json { render json: @recipe.errors, status: :unprocessable_entity }
     end
   end
 
