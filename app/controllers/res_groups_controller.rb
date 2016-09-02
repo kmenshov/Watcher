@@ -79,7 +79,7 @@ class ResGroupsController < ApplicationController
 
     def read_only_record
       respond_to do |format|
-        format.html { redirect_to res_groups_url, notice: 'This group can not be modified.' }
+        format.html { redirect_to res_groups_url, alert: 'This group can not be modified.' }
         #format.json { render json: @res_group.errors, status: :unprocessable_entity }
       end
     end

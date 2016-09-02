@@ -1,6 +1,10 @@
 Rails.application.routes.draw do
 
-  #get 'res_yields/rewatch'
+  resources :users
+
+  get 'login', to: 'sessions#new'
+  post 'login', to: 'sessions#create'
+  delete 'logout', to: 'sessions#destroy'
 
   resources :res_groups
 
@@ -13,15 +17,16 @@ Rails.application.routes.draw do
 
 
   #redirects for group and recipe filtering forms
-  post 'filter_recipes_by_group', to: 'redirects#filter_recipes_by_group', as: :filter_recipes_by_group
-  post 'filter_yields_by_group', to: 'redirects#filter_yields_by_group', as: :filter_yields_by_group
-  post 'filter_yields_by_recipe', to: 'redirects#filter_yields_by_recipe', as: :filter_yields_by_recipe
+  post 'filter_recipes_by_group', to: 'redirects#filter_recipes_by_group'
+  post 'filter_yields_by_group', to: 'redirects#filter_yields_by_group'
+  post 'filter_yields_by_recipe', to: 'redirects#filter_yields_by_recipe'
+
+
+  root 'res_yields#index'
+
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
-
-  # You can have the root of your site routed with "root"
-  # root 'welcome#index'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

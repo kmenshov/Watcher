@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160809172813) do
+ActiveRecord::Schema.define(version: 20160902171705) do
 
   create_table "recipes", force: :cascade do |t|
     t.string   "name",         null: false
@@ -24,11 +24,23 @@ ActiveRecord::Schema.define(version: 20160809172813) do
 
   add_index "recipes", ["res_group_id"], name: "index_recipes_on_res_group_id"
 
+  create_table "remember_digests", force: :cascade do |t|
+    t.string   "remember_digest"
+    t.integer  "user_id"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+  end
+
+  add_index "remember_digests", ["user_id"], name: "index_remember_digests_on_user_id"
+
   create_table "res_groups", force: :cascade do |t|
     t.string   "name",       null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer  "user_id"
   end
+
+  add_index "res_groups", ["user_id"], name: "index_res_groups_on_user_id"
 
   create_table "res_yields", force: :cascade do |t|
     t.text     "content"
@@ -39,5 +51,15 @@ ActiveRecord::Schema.define(version: 20160809172813) do
   end
 
   add_index "res_yields", ["recipe_id"], name: "index_res_yields_on_recipe_id"
+
+  create_table "users", force: :cascade do |t|
+    t.string   "email"
+    t.string   "password_digest"
+    t.boolean  "admin",           default: false
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
+  end
+
+  add_index "users", ["email"], name: "index_users_on_email", unique: true
 
 end

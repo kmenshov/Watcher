@@ -27,7 +27,4 @@ class ResYieldsController < ApplicationController
     @res_yield.update(read: true)
   end
 
-#does rewatch (update) for all recipes
-  def rewatch
-  end
 end
