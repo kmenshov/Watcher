@@ -21,3 +21,11 @@
 #alert {
   color: red;
 }
+
+.controls form {
+  display: inline-block;
+}
+
+#mark-form {
+  float: right;
+}

@@ -2,17 +2,29 @@
 
 <h1>Listing Res Yields</h1>
 
-<%= form_tag(filter_yields_by_group_path) do %>
+
+<div class="controls">
+
+<%= form_tag(filter_yields_path) do %>
+
   <%= label_tag(:res_group_id, "Filter by group:") %>
-  <%= select_tag(:res_group_id, options_for_select(@res_groups_list)) %>
+  <%= select_tag(:res_group_id, options_for_select(@res_groups_list, params[:res_group_id])) %>
+
+  <%= label_tag(:recipe_id, "Filter by recipe:") %>
+  <%= select_tag(:recipe_id, options_for_select(@recipes_list, params[:recipe_id])) %>
+
   <%= submit_tag("Switch") %>
 <% end %>
 
-<%= form_tag(filter_yields_by_recipe_path) do %>
-  <%= label_tag(:recipe_id, "Filter by recipe:") %>
-  <%= select_tag(:recipe_id, options_for_select(@recipes_list)) %>
-  <%= submit_tag("Switch") %>
+<%= form_tag(res_yields_mark_path, id: "mark-form") do %>
+  <%= hidden_field_tag(:res_group_id, params[:res_group_id]) %>
+  <%= hidden_field_tag(:recipe_id, params[:recipe_id]) %>
+  <%= hidden_field_tag(:page, @res_yields.current_page) %>
+  <%= submit_tag("Mark page as read", name: :mark_page_read) %>
+  <%= submit_tag("Mark all as read", name: :mark_all_read) %>
 <% end %>
+
+</div>
 
 <%= will_paginate @res_yields %>
 

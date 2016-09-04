@@ -14,12 +14,12 @@ Rails.application.routes.draw do
   resources :res_yields, only: [:index, :show]
   get 'recipes/:recipe_id/res_yields', to: 'res_yields#index', as: :recipe_res_yields
   get 'res_groups/:res_group_id/res_yields', to: 'res_yields#index', as: :res_group_res_yields
+  post 'res_yields_mark', to: 'res_yields#mark'
 
 
   #redirects for group and recipe filtering forms
-  post 'filter_recipes_by_group', to: 'redirects#filter_recipes_by_group'
-  post 'filter_yields_by_group', to: 'redirects#filter_yields_by_group'
-  post 'filter_yields_by_recipe', to: 'redirects#filter_yields_by_recipe'
+  post 'filter_recipes', to: 'redirects#filter_recipes'
+  post 'filter_yields', to: 'redirects#filter_yields'
 
 
   root 'res_yields#index'
