@@ -7,13 +7,13 @@ module FetchGroups
 
 private
 
-  def set_res_groups_list(add_all: false)
-    @res_groups_list = ResGroup.available_groups.pluck(:name, :id)
+  def set_res_groups_list_for(user, add_all: false)
+    @res_groups_list = ResGroup.available_groups_for(user).pluck(:name, :id)
     @res_groups_list.unshift(["All", "all"]) if add_all
   end
 
-  def set_recipes_list(add_all: false, res_group_id: nil)
-    @recipes_list = Recipe.available_recipes(res_group_id: res_group_id).pluck(:name, :id)
+  def set_recipes_list_for(user, add_all: false, res_group_id: nil)
+    @recipes_list = Recipe.available_recipes_for(user, res_group_id: res_group_id).pluck(:name, :id)
     @recipes_list.unshift(["All", "all"]) if add_all
   end
 

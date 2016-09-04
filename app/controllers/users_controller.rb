@@ -1,12 +1,12 @@
 class UsersController < ApplicationController
-  rescue_from (ActiveRecord::RecordNotFound) { |e| redirect_to users_url }
+  #rescue_from (ActiveRecord::RecordNotFound) { |e| redirect_to users_url }
 
   before_action :set_user, only: [:show, :edit, :update, :destroy]
 
   # GET /users
   # GET /users.json
   def index
-    @users = User.all
+    @users = User.available_users_for(current_user)
   end
 
   # GET /users/1
@@ -31,6 +31,10 @@ class UsersController < ApplicationController
     respond_to do |format|
       if @user.save
         log_in @user
+
+        default_group = ResGroup.new(name: Rails.configuration.res_group_reserved_names[0], user_id: @user.id)
+        default_group.save(validate: false)
+
         format.html { redirect_to @user, notice: 'User was successfully created.' }
         format.json { render :show, status: :created, location: @user }
       else
@@ -67,7 +71,8 @@ class UsersController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_user
-      @user = User.find(params[:id])
+      @user = User.available_users_for(current_user).find_by_id(params[:id])
+      redirect_back_or_default(default: users_url, alert: 'User not found or access denied.') unless @user
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

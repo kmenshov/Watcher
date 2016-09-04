@@ -6,24 +6,7 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
-yields_list = [
-  [ "Content 1", 0 ],
-  [ "Content 2", 1 ],
-  [ "Content 3", 2 ],
-  [ "Content 4", 3 ],
-  [ "Content 5", 4 ],
-  [ "Content 6", 4 ],
-  [ "Content 7", 3 ],
-  [ "Content 8", 2 ],
-  [ "Content 9", 1 ],
-  [ "Content 10", 0 ],
-  [ "Content 11", 1 ],
-  [ "Content 12", 0 ],
-  [ "Content 13", 1 ]
-]
+user = User.create(email: 'admin@example.com', password: 'admin3573', password_confirmation: 'admin3573')
 
-ress = Recipe.all
-
-yields_list.each do |content, res_n|
-  ResYield.create( content: content, read: false, recipe: ress[res_n] )
-end
+group = ResGroup.new(name: Rails.configuration.res_group_reserved_names[0], user_id: user.id)
+group.save(validate: false)

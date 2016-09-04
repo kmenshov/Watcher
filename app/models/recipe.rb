@@ -2,7 +2,7 @@ class Recipe < ActiveRecord::Base
   require 'open-uri'
 
   belongs_to :res_group
-  has_many :res_yields, dependent: :destroy
+  has_many :res_yields, dependent: :delete_all
 
   validates :name, :url, :content, presence: true
   validate :ensure_proper_group_id
@@ -27,13 +27,14 @@ class Recipe < ActiveRecord::Base
     obtained_yields
   end
 
-  def self.available_recipes(res_group_id: nil)
-  #TODO: add a user constraint here
-    if res_group_id
-      ResGroup.find(res_group_id).recipes
-    else
-      Recipe.all
-    end
+  def user
+    User.find_by_id(ResGroup.find_by_id(self.res_group_id).user_id)
+  end
+
+  def self.available_recipes_for(user, other_user_id: nil, res_group_id: nil)
+    g = ResGroup.available_groups_for(user, other_user_id: other_user_id)
+    g = g.where(id: res_group_id) if res_group_id
+    Recipe.where(res_group_id: g)
   end
 
   #check all recipes' urls and add all new yields to the DB
@@ -55,8 +56,8 @@ class Recipe < ActiveRecord::Base
   private
 
     def ensure_proper_group_id
-      unless ResGroup.available_groups.ids.include? self.res_group_id
-        self.res_group_id = ResGroup.default_group.id
+      unless ResGroup.available_groups_for(self.user).ids.include? self.res_group_id
+        self.res_group_id = self.default_group.id
       end
     end
 

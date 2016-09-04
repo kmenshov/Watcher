@@ -1,23 +1,18 @@
 class RecipesController < ApplicationController
-  rescue_from (ActiveRecord::RecordNotFound) { |e| redirect_to recipes_url }
+  #rescue_from (ActiveRecord::RecordNotFound) { |e| redirect_to recipes_url }
 
   include FetchGroups
 
-  before_action :set_recipe, only: [:show, :edit, :update, :destroy]
-
   #'create' and 'update' are needed too in case of redirections after failed validations:
-  before_action only: [:new, :edit, :create, :update] { set_res_groups_list }
-  before_action only: [:index, :res_group_recipes] { set_res_groups_list(add_all: true) }
+  before_action only: [:new, :edit, :create, :update] { set_res_groups_list_for(current_user) }
+  before_action only: [:index]                        { set_res_groups_list_for(current_user, add_all: true) }
+
+  before_action :set_recipe, only: [:show, :edit, :update, :destroy]
 
   # GET /recipes
   # GET /recipes.json
   def index
-    @recipes = Recipe.all
-  end
-
-  def res_group_recipes
-    @recipes = Recipe.available_recipes(res_group_id: params[:res_group_id])
-    render :index
+    @recipes = Recipe.available_recipes_for(current_user, res_group_id: params[:res_group_id])
   end
 
   # GET /recipes/1
@@ -80,7 +75,8 @@ class RecipesController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_recipe
-      @recipe = Recipe.find(params[:id])
+      @recipe = Recipe.available_recipes_for(current_user).find_by_id(params[:id])
+      redirect_back_or_default(default: recipes_url, alert: 'Recipe not found or access denied.') unless @recipe
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

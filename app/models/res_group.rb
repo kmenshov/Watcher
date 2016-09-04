@@ -1,4 +1,5 @@
 class ResGroup < ActiveRecord::Base
+  belongs_to :user
   has_many :recipes
   has_many :res_yields, through: :recipes
 
@@ -7,14 +8,18 @@ class ResGroup < ActiveRecord::Base
   before_destroy :ensure_default_group
 
 
-  def self.default_group
-  #TODO: add a user constraint here
-    ResGroup.find_by_name(Rails.configuration.res_group_reserved_names[0])
+  def default_group
+    @default_group ||= ResGroup.where(user_id: self.user_id).find_by_name(Rails.configuration.res_group_reserved_names[0])
   end
 
-  def self.available_groups
-  #TODO: add a user constraint here
-    ResGroup.all
+  def default_group?
+    self.id == self.default_group.id
+  end
+
+  def self.available_groups_for(user, other_user_id: nil)
+    u = User.available_users_for(user)
+    u = u.where(id: other_user_id) if other_user_id
+    ResGroup.where(user_id: u)
   end
 
 
@@ -22,7 +27,11 @@ class ResGroup < ActiveRecord::Base
 
     def ensure_default_group
       if recipes.any?
-        recipes.update_all(res_group_id: ResGroup.default_group.id)
+        if self.default_group?
+          recipes.destroy_all
+        else
+          recipes.update_all(res_group_id: self.default_group.id)
+        end
       end
     end
 

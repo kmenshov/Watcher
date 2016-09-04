@@ -5,11 +5,20 @@ class ApplicationController < ActionController::Base
 
   include SessionsHelper
 
+  before_action :require_login
+
 
   private
 
-    def redirect_back_or_default(default = root_path, options = {})
+    def redirect_back_or_default(default: root_url, **options)
       redirect_to (request.referer.present? ? :back : default), options
+    end
+
+    def require_login
+      unless logged_in
+        flash[:alert] = 'Please log in.'
+        redirect_to login_url
+      end
     end
 
 end

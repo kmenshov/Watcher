@@ -9,11 +9,11 @@ Rails.application.routes.draw do
   resources :res_groups
 
   resources :recipes
-  get 'res_groups/:res_group_id/recipes', to: 'recipes#res_group_recipes', as: :res_group_recipes
+  get 'res_groups/:res_group_id/recipes', to: 'recipes#index', as: :res_group_recipes
 
   resources :res_yields, only: [:index, :show]
-  get 'recipes/:recipe_id/res_yields', to: 'res_yields#recipe_res_yields', as: :recipe_res_yields
-  get 'res_groups/:res_group_id/res_yields', to: 'res_yields#res_group_res_yields', as: :res_group_res_yields
+  get 'recipes/:recipe_id/res_yields', to: 'res_yields#index', as: :recipe_res_yields
+  get 'res_groups/:res_group_id/res_yields', to: 'res_yields#index', as: :res_group_res_yields
 
 
   #redirects for group and recipe filtering forms

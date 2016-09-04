@@ -35,4 +35,12 @@ class User < ActiveRecord::Base
     return authenticated
   end
 
+  def self.available_users_for(user)
+    if user.admin?
+      User.all
+    else
+      User.where(id: user)
+    end
+  end
+
 end
