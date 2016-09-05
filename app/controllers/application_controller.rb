@@ -10,12 +10,9 @@ class ApplicationController < ActionController::Base
 
   private
 
-    def redirect_back_or_default(default: root_url, **options)
-      redirect_to (request.referer.present? ? :back : default), options
-    end
-
     def require_login
       unless logged_in
+        store_location
         flash[:alert] = 'Please log in.'
         redirect_to login_url
       end

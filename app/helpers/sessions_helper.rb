@@ -32,4 +32,17 @@ module SessionsHelper
   end
   alias logged_in current_user
 
+  def store_location
+    session[:forwarding_url] = request.url if request.get?
+  end
+
+  def redirect_session_or_default(default: root_url, **options)
+    redirect_to (session[:forwarding_url] || default), options
+    session.delete(:forwarding_url)
+  end
+
+  def redirect_back_or_default(default: root_url, **options)
+    redirect_to (request.referer.present? ? :back : default), options
+  end
+
 end
