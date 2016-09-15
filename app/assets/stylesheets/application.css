@@ -14,13 +14,16 @@
  *= require_self
  */
 
-#notice {
-  color: green;
+.td-narrow {
+  width: 1px;
+  white-space: nowrap;
 }
 
-#alert {
-  color: red;
+.is-breakable {
+  word-break: break-all;
 }
+
+/* OUTDATED BELOW */
 
 .controls form {
   display: inline-block;

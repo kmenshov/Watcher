@@ -1,5 +1,5 @@
-<h1>New User</h1>
+<% content_for :top_navbar do %>
+  <p class="navbar-text">Creating New User</p>
+<% end %>
 
-<%= render 'form' %>
-
-<%= link_to 'Back', users_path %>
+<%= render 'form', submit_name: 'Create' %>

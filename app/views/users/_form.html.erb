@@ -1,29 +1,32 @@
 <%= form_for(@user) do |f| %>
-  <% if @user.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@user.errors.count, "error") %> prohibited this user from being saved:</h2>
 
-      <ul>
+  <% if @user.errors.any? %>
+    <div class="panel panel-danger">
+      <div class="panel-heading">
+        <%= pluralize(@user.errors.count, "error") %> prohibited this user from being saved:
+      </div>
+      <ul class="list-group">
       <% @user.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
+        <li class="list-group-item"><%= message %></li>
       <% end %>
       </ul>
     </div>
   <% end %>
 
-  <div class="field">
-    <%= f.label :email %><br>
-    <%= f.email_field :email %>
+  <div class="form-group">
+    <%= f.label :email %>
+    <%= f.email_field :email, class: "form-control" %>
   </div>
-  <div class="field">
-    <%= f.label :password %><br>
-    <%= f.password_field :password %>
+  <div class="form-group">
+    <%= f.label :password %>
+    <%= f.password_field :password, class: "form-control" %>
   </div>
-  <div class="field">
-    <%= f.label :password_confirmation, "Confirmation" %><br>
-    <%= f.password_field :password_confirmation %>
+  <div class="form-group">
+    <%= f.label :password_confirmation, "Confirmation" %>
+    <%= f.password_field :password_confirmation, class: "form-control" %>
   </div>
-  <div class="actions">
-    <%= f.submit %>
-  </div>
+
+  <%= f.button submit_name, class: "btn btn-primary" %>
+  <%= link_to 'Cancel', users_path, class: "btn btn-default", role: "button" %>
+
 <% end %>

@@ -1,6 +1,7 @@
 class User < ActiveRecord::Base
   attr_accessor :remember_token
   has_many :remember_digests, dependent: :destroy
+  has_many :res_groups, dependent: :destroy
 
   before_save { self.email = email.downcase }
 

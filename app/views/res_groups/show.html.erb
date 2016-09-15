@@ -1,12 +1,19 @@
-<p>
-  <strong>Name:</strong>
-  <%= @res_group.name %>
-</p>
+<div class="panel panel-default">
 
-<p>
-  <strong>Owner:</strong>
-  <%= @res_group.user.email %>
-</p>
+  <div class="panel-heading">
+    <b><%= @res_group.name %></b>
+    (Owner: <b><%= @res_group.user.email %></b>)
 
-<%= link_to 'Edit', edit_res_group_path(@res_group) %> |
-<%= link_to 'Back', res_groups_path %>
+    <ul class="list-inline pull-right">
+      <li><%= link_to 'Edit', edit_res_group_path(@res_group) %></li>
+      <li><%= link_to 'Destroy', @res_group, method: :delete, data: { confirm: 'Are you sure?' } %></li>
+    </ul>
+  </div>
+
+  <div class="list-group">
+    <% @res_group.recipes.each do |recipe| %>
+      <%= link_to recipe.name, recipe, class: "list-group-item" %>
+    <% end %>
+  </div>
+
+</div>

@@ -1,8 +1,8 @@
-<h1>New Recipe</h1>
+<% content_for :top_navbar do %>
+  <p class="navbar-text">Creating New Recipe</p>
+<% end %>
 
-<%= render 'form' %>
-
-<%= link_to 'Back', recipes_path %>
+<%= render 'form', submit_name: 'Create' %>
 
 <% if params[:preview_button] %>
     <%= render 'yields_list' %>

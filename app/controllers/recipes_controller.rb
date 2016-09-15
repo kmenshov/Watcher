@@ -38,7 +38,7 @@ class RecipesController < ApplicationController
       if params[:preview_button]
         @recipe.valid?
       elsif @recipe.save
-        format.html { redirect_to @recipe, notice: 'Recipe was successfully created.' }
+        format.html { redirect_to @recipe, flash: { success: 'Recipe was successfully created.' } }
         format.json { render :show, status: :created, location: @recipe }
       end
       format.html { render :new }
@@ -54,7 +54,7 @@ class RecipesController < ApplicationController
         @recipe.assign_attributes(recipe_params)
         @recipe.valid?
       elsif @recipe.update(recipe_params)
-        format.html { redirect_to @recipe, notice: 'Recipe was successfully updated.' }
+        format.html { redirect_to @recipe, flash: { success: 'Recipe was successfully updated.' } }
         format.json { render :show, status: :ok, location: @recipe }
       end
       format.html { render :edit }
@@ -67,7 +67,7 @@ class RecipesController < ApplicationController
   def destroy
     @recipe.destroy
     respond_to do |format|
-      format.html { redirect_to recipes_url, notice: 'Recipe was successfully destroyed.' }
+      format.html { redirect_to recipes_url, flash: { success: 'Recipe was successfully destroyed.' } }
       format.json { head :no_content }
     end
   end
@@ -76,7 +76,7 @@ class RecipesController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_recipe
       @recipe = Recipe.available_recipes_for(current_user).find_by_id(params[:id])
-      redirect_back_or_default(default: recipes_url, alert: 'Recipe not found or access denied.') unless @recipe
+      redirect_back_or_default(default: recipes_url, flash: { danger: 'Recipe not found or access denied.' }) unless @recipe
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

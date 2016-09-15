@@ -1,6 +1,5 @@
-<h1>Editing Res Group</h1>
+<% content_for :top_navbar do %>
+  <p class="navbar-text">Editing Group</p>
+<% end %>
 
-<%= render 'form' %>
-
-<%= link_to 'Show', @res_group %> |
-<%= link_to 'Back', res_groups_path %>
+<%= render 'form', submit_name: 'Save' %>

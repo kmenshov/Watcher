@@ -19,7 +19,7 @@ class ResYieldsController < ApplicationController
     if @res_yield
       @res_yield.update(read: true)
     else
-      redirect_back_or_default(alert: 'Yield not found or access denied.')
+      redirect_back_or_default(flash: { danger: 'Yield not found or access denied.' })
     end
   end
 

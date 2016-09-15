@@ -1,5 +1,5 @@
-<h1>New Res Group</h1>
+<% content_for :top_navbar do %>
+  <p class="navbar-text">Creating New Group</p>
+<% end %>
 
-<%= render 'form' %>
-
-<%= link_to 'Back', res_groups_path %>
+<%= render 'form', submit_name: 'Create' %>

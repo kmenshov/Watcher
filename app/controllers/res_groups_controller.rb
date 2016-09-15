@@ -32,7 +32,7 @@ class ResGroupsController < ApplicationController
 
     respond_to do |format|
       if @res_group.save
-        format.html { redirect_to @res_group, notice: 'Group was successfully created.' }
+        format.html { redirect_to @res_group, flash: { success: 'Group was successfully created.' } }
         format.json { render :show, status: :created, location: @res_group }
       else
         format.html { render :new }
@@ -46,7 +46,7 @@ class ResGroupsController < ApplicationController
   def update
     respond_to do |format|
       if @res_group.update(res_group_params)
-        format.html { redirect_to @res_group, notice: 'Group was successfully updated.' }
+        format.html { redirect_to @res_group, flash: { success: 'Group was successfully updated.' } }
         format.json { render :show, status: :ok, location: @res_group }
       else
         format.html { render :edit }
@@ -60,7 +60,7 @@ class ResGroupsController < ApplicationController
   def destroy
     @res_group.destroy
     respond_to do |format|
-      format.html { redirect_to res_groups_url, notice: 'Group was successfully destroyed.' }
+      format.html { redirect_to res_groups_url, flash: { success: 'Group was successfully destroyed.' } }
       format.json { head :no_content }
     end
   end
@@ -72,7 +72,7 @@ class ResGroupsController < ApplicationController
       if @res_group
         @res_group.readonly! if Rails.configuration.res_group_reserved_names.include?(@res_group.name)
       else
-        redirect_back_or_default(default: res_groups_url, alert: 'Group not found or access denied.')
+        redirect_back_or_default(default: res_groups_url, flash: { danger: 'Group not found or access denied.' })
       end
     end
 
@@ -83,7 +83,7 @@ class ResGroupsController < ApplicationController
 
     def read_only_record
       respond_to do |format|
-        format.html { redirect_back_or_default(default: res_groups_url, alert: 'This group can not be modified.') }
+        format.html { redirect_back_or_default(default: res_groups_url, flash: { danger: 'This group can not be modified.' }) }
         #format.json { render json: @res_group.errors, status: :unprocessable_entity }
       end
     end

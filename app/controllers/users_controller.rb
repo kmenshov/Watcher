@@ -2,6 +2,8 @@ class UsersController < ApplicationController
   #rescue_from (ActiveRecord::RecordNotFound) { |e| redirect_to users_url }
 
   before_action :set_user, only: [:show, :edit, :update, :destroy]
+  before_action :require_admin, only: [:index, :new, :create]
+
 
   # GET /users
   # GET /users.json
@@ -35,7 +37,7 @@ class UsersController < ApplicationController
         default_group = ResGroup.new(name: Rails.configuration.res_group_reserved_names[0], user_id: @user.id)
         default_group.save(validate: false)
 
-        format.html { redirect_to @user, notice: 'User was successfully created.' }
+        format.html { redirect_to @user, flash: { success: 'User was successfully created.' } }
         format.json { render :show, status: :created, location: @user }
       else
         format.html { render :new }
@@ -49,7 +51,7 @@ class UsersController < ApplicationController
   def update
     respond_to do |format|
       if @user.update(user_params)
-        format.html { redirect_to @user, notice: 'User was successfully updated.' }
+        format.html { redirect_to @user, flash: { success: 'User was successfully updated.' } }
         format.json { render :show, status: :ok, location: @user }
       else
         format.html { render :edit }
@@ -63,7 +65,7 @@ class UsersController < ApplicationController
   def destroy
     @user.destroy
     respond_to do |format|
-      format.html { redirect_to users_url, notice: 'User was successfully destroyed.' }
+      format.html { redirect_to users_url, flash: { success: 'User was successfully destroyed.' } }
       format.json { head :no_content }
     end
   end
@@ -72,7 +74,7 @@ class UsersController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_user
       @user = User.available_users_for(current_user).find_by_id(params[:id])
-      redirect_back_or_default(default: users_url, alert: 'User not found or access denied.') unless @user
+      redirect_back_or_default(default: users_url, flash: { danger: 'User not found or access denied.' }) unless @user
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

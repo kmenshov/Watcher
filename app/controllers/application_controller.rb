@@ -13,8 +13,14 @@ class ApplicationController < ActionController::Base
     def require_login
       unless logged_in
         store_location
-        flash[:alert] = 'Please log in.'
+        flash[:warning] = 'Please log in.'
         redirect_to login_url
+      end
+    end
+
+    def require_admin
+      unless current_user.admin?
+        redirect_back_or_default(default: root_url, flash: { danger: 'That was not the best place to be in (access denied).' })
       end
     end
 

@@ -1,8 +1,7 @@
-<h1>Editing Recipe</h1>
+<% content_for :top_navbar do %>
+  <p class="navbar-text">Editing Recipe</p>
+<% end %>
 
-<%= render 'form' %>
-
-<%= link_to 'Show', @recipe %> |
-<%= link_to 'Back', recipes_path %>
+<%= render 'form', submit_name: 'Save' %>
 
 <%= render 'yields_list' %>

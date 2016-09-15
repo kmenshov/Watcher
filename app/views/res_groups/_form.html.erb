@@ -1,21 +1,23 @@
 <%= form_for(@res_group) do |f| %>
   <% if @res_group.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@res_group.errors.count, "error") %> prohibited this res_group from being saved:</h2>
-
-      <ul>
-      <% @res_group.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
+    <div class="panel panel-danger">
+      <div class="panel-heading">
+        <%= pluralize(@res_group.errors.count, "error") %> prohibited this group from being saved:
+      </div>
+        <ul class="list-group">
+        <% @res_group.errors.full_messages.each do |message| %>
+          <li class="list-group-item"><%= message %></li>
+        <% end %>
+        </ul>
     </div>
   <% end %>
 
-  <div class="field">
-    <%= f.label :name %><br>
-    <%= f.text_field :name %>
+  <div class="form-group">
+    <%= f.label :name %>
+    <%= f.text_field :name, class: "form-control" %>
   </div>
-  <div class="actions">
-    <%= f.submit %>
-  </div>
+
+  <%= f.button submit_name, class: "btn btn-primary" %>
+  <%= link_to 'Cancel', res_groups_path, class: "btn btn-default", role: "button" %>
+
 <% end %>

@@ -1,34 +1,36 @@
 <%= form_for(@recipe) do |f| %>
   <% if @recipe.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@recipe.errors.count, "error") %> prohibited this recipe from being saved:</h2>
-
-      <ul>
-      <% @recipe.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
+    <div class="panel panel-danger">
+      <div class="panel-heading">
+        <%= pluralize(@recipe.errors.count, "error") %> prohibited this recipe from being saved:
+      </div>
+        <ul class="list-group">
+        <% @recipe.errors.full_messages.each do |message| %>
+          <li class="list-group-item"><%= message %></li>
+        <% end %>
+        </ul>
     </div>
   <% end %>
 
-  <div class="field">
-    <%= f.label :name %><br>
-    <%= f.text_field :name %>
+  <div class="form-group">
+    <%= f.label :name %>
+    <%= f.text_field :name, class: "form-control" %>
   </div>
-  <div class="field">
-    <%= f.label :url %><br>
-    <%= f.text_field :url %>
+  <div class="form-group">
+    <%= f.label :url %>
+    <%= f.url_field :url, class: "form-control" %>
   </div>
-  <div class="field">
-    <%= f.label :content %><br>
-    <%= f.text_field :content %>
+  <div class="form-group">
+    <%= f.label :content %>
+    <%= f.text_field :content, class: "form-control" %>
   </div>
-  <div class="field">
-    <%= f.label :res_group_id, "Group Name" %><br>
-    <%= f.select :res_group_id, @res_groups_list %>
+  <div class="form-group">
+    <%= f.label :res_group_id, "Group Name" %>
+    <%= f.select :res_group_id, @res_groups_list, {}, { class: "form-control" } %>
   </div>
-  <div class="actions">
-    <%= f.submit %>
-    <%= f.submit 'Preview', :name => 'preview_button' %>
-  </div>
+
+  <%= f.button submit_name, class: "btn btn-primary" %>
+  <%= f.button 'Preview', :name => 'preview_button', class: "btn btn-info" %>
+  <%= link_to 'Cancel', recipes_path, class: "btn btn-default", role: "button" %>
+
 <% end %>

@@ -1,24 +1,27 @@
-<p>
-  <strong>Name:</strong>
-  <%= @recipe.name %>
-</p>
+<div class="panel panel-default">
 
-<p>
-  <strong>Url:</strong>
-  <%= @recipe.url %>
-</p>
+  <div class="panel-heading">
+    <b><%= link_to @recipe.res_group.name, @recipe.res_group %>
+       &#47; <%= @recipe.name %></b>
 
-<p>
-  <strong>Content:</strong>
-  <%= @recipe.content %>
-</p>
+    <ul class="list-inline pull-right">
+      <li><%= link_to 'Edit', edit_recipe_path(@recipe) %></li>
+      <li><%= link_to 'Destroy', @recipe, method: :delete, data: { confirm: 'Are you sure?' } %></li>
+    </ul>
+  </div>
 
-<p>
-  <strong>Res group:</strong>
-  <%= @recipe.res_group.name %>
-</p>
-
-<%= link_to 'Edit', edit_recipe_path(@recipe) %> |
-<%= link_to 'Back', recipes_path %>
+  <div class="table-responsive">
+    <table class="table">
+      <tr>
+        <td class="td-narrow">Url:</td>
+        <td><%= link_to @recipe.url, @recipe.url, :target => "_blank" %></td>
+      </tr>
+      <tr>
+        <td class="td-narrow">Content:</td>
+        <td><%= @recipe.content %></td>
+      </tr>
+    </table>
+  </div>
+</div>
 
 <%= render 'yields_list' %>

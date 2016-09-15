@@ -1,31 +1,32 @@
-<h1>Listing Users</h1>
+<% content_for :top_navbar do %>
+  <ul class="nav navbar-nav navbar-right">
+    <li><%= link_to 'New User', new_user_path %></li>
+  </ul>
+<% end %>
 
-<table>
-  <thead>
-    <tr>
-      <th>Email</th>
-      <th>Password digest</th>
-      <th>Remember digests</th>
-      <th>Admin</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @users.each do |user| %>
+<div class="table-responsive">
+  <table class="table table-hover">
+    <thead>
       <tr>
-        <td><%= user.email %></td>
-        <td><%= user.password_digest %></td>
-        <td><%= render user.remember_digests %></td>
-        <td><%= user.admin %></td>
-        <td><%= link_to 'Show', user %></td>
-        <td><%= link_to 'Edit', edit_user_path(user) %></td>
-        <td><%= link_to 'Destroy', user, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <th>Email</th>
+        <th>Password digest</th>
+        <th>Remember digests</th>
+        <th></th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+    </thead>
 
-<br>
-
-<%= link_to 'New User', new_user_path %>
+    <tbody>
+      <% @users.each do |user| %>
+        <% tr_class = user.admin? ? "warning" : nil %>
+        <%= content_tag :tr, class: tr_class do %>
+          <td><%= link_to user.email, user %></td>
+          <td class="is-breakable"><%= link_to user.password_digest, user %></td>
+          <td class="is-breakable"><%= link_to user do
+                                        render user.remember_digests
+                                       end %></td>
+          <td><%= 'Admin' if user.admin %></td>
+        <% end %>
+      <% end %>
+    </tbody>
+  </table>
+</div>

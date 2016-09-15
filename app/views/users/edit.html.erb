@@ -1,6 +1,5 @@
-<h1>Editing User</h1>
+<% content_for :top_navbar do %>
+  <p class="navbar-text">Editing Profile</p>
+<% end %>
 
-<%= render 'form' %>
-
-<%= link_to 'Show', @user %> |
-<%= link_to 'Back', users_path %>
+<%= render 'form', submit_name: 'Save' %>
