@@ -13,22 +13,3 @@
  *= require_tree .
  *= require_self
  */
-
-.td-narrow {
-  width: 1px;
-  white-space: nowrap;
-}
-
-.is-breakable {
-  word-break: break-all;
-}
-
-/* OUTDATED BELOW */
-
-.controls form {
-  display: inline-block;
-}
-
-#mark-form {
-  float: right;
-}

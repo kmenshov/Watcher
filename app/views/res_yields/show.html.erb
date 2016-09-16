@@ -1,11 +1,13 @@
-<p>
-  <strong>Recipe:</strong>
-  <%= @res_yield.recipe.name %>
-</p>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <b><%= link_to @res_yield.recipe.res_group.name, @res_yield.recipe.res_group %>
+       &#47; <%= link_to @res_yield.recipe.name, @res_yield.recipe %>
+       &#58;</b> <%= @res_yield.created_at.to_s(:long) %>
+  </div>
 
-<p>
-  <strong>Content:</strong>
-  <%= @res_yield.content.html_safe %>
-</p>
+  <div class="panel-body">
+    <%= @res_yield.content %>
+  </div>
+</div>
 
-<%= link_to 'Back', res_yields_path %>
+<%= @res_yield.content.html_safe %>

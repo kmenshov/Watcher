@@ -2,9 +2,10 @@
 
   <%= form_tag(filter_recipes_path, class: "navbar-form navbar-left") do %>
     <div class="form-group">
-      <%= select_tag(:res_group_id, options_for_select(@res_groups_list, params[:res_group_id]), class: "form-control") %>
+      <%= select_tag(:res_group_id, options_for_select(@res_groups_list, params[:res_group_id]),
+                      class: "form-control", onchange: "this.form.submit();") %>
     </div>
-    <%= submit_tag("Go", class: "btn btn-default") %>
+    <noscript><%= submit_tag("Go", class: "btn btn-default") %></noscript>
   <% end %>
 
   <ul class="nav navbar-nav navbar-right">
