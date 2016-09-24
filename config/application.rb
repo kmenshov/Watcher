@@ -26,7 +26,6 @@ module Watcher
 
     #------------------------- My Initializers -------------------------
     config.res_group_reserved_names = ['none']
-    config.res_yields_debug = true #Note: this setting is canceled in environments/production.rb
     #-------------------------------------------------------------------
   end
 end

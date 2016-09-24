@@ -1,7 +1,22 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  name: MyString
+default_group_for_user_one:
+  name: <%= Rails.configuration.res_group_reserved_names[0] %>
+  user: user_one
 
-two:
-  name: MyString
+group_one_for_user_one:
+  name: Group One for User One
+  user: user_one
+
+group_two_for_user_one:
+  name: Group Two for User One
+  user: user_one
+
+
+default_group_for_user_two:
+  name: <%= Rails.configuration.res_group_reserved_names[0] %>
+  user: user_two
+
+group_one_for_user_two:
+  name: Group One for User Two
+  user: user_two

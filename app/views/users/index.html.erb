@@ -17,7 +17,7 @@
 
     <tbody>
       <% @users.each do |user| %>
-        <% tr_class = user.admin? ? "warning" : nil %>
+        <% tr_class = user.admin? ? "danger" : nil %>
         <%= content_tag :tr, class: tr_class do %>
           <td><%= link_to user.email, user %></td>
           <td class="is-breakable"><%= link_to user.password_digest, user %></td>

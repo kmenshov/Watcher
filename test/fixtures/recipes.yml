@@ -1,13 +1,57 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  name: MyString
-  url: MyString
-  content: MyString
-  res_group_id: 
+r_one_for_user_one:
+  name: Recipe One for User One
+  url: https://www.google.com/
+  content: Content of Recipe One-One
+  res_group: default_group_for_user_one
 
-two:
-  name: MyString
-  url: MyString
-  content: MyString
-  res_group_id: 
+r_two_for_user_one:
+  name: Recipe Two for User One
+  url: https://www.google.com/
+  content: Content of Recipe Two-One
+  res_group: group_one_for_user_one
+
+r_three_for_user_one:
+  name: Recipe Three for User One
+  url: https://www.google.com/
+  content: Content of Recipe Three-One
+  res_group: group_one_for_user_one
+
+r_four_for_user_one:
+  name: Recipe Four for User One
+  url: https://www.google.com/
+  content: Content of Recipe Four-One
+  res_group: group_one_for_user_one
+
+r_five_for_user_one:
+  name: Recipe Five for User One
+  url: https://www.google.com/
+  content: Content of Recipe Five-One
+  res_group: group_two_for_user_one
+
+r_six_for_user_one:
+  name: Recipe Six for User One
+  url: https://www.google.com/
+  content: Content of Recipe Six-One
+  res_group: group_two_for_user_one
+
+#----------------------------------------
+
+r_one_for_user_two:
+  name: Recipe One for User Two
+  url: https://www.google.com/
+  content: Content of Recipe One-Two
+  res_group: default_group_for_user_two
+
+r_two_for_user_two:
+  name: Recipe Two for User Two
+  url: https://www.google.com/
+  content: Content of Recipe Two-Two
+  res_group: default_group_for_user_two
+
+r_three_for_user_two:
+  name: Recipe Three for User Two
+  url: https://www.google.com/
+  content: Content of Recipe Three-Two
+  res_group: group_one_for_user_two

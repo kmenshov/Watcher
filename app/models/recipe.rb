@@ -21,7 +21,7 @@ class Recipe < ActiveRecord::Base
       end
     rescue => e
       obtained_yields << 'Parsing error'
-      obtained_yields << e.inspect if Rails.configuration.res_yields_debug
+      obtained_yields << e.inspect if Rails.env.development?
     end
 
     obtained_yields

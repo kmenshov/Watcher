@@ -1,11 +1,27 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  content: MyText
-  read: false
-  recipe_id: 
+<% base_time = 1.year.ago %>
 
-two:
-  content: MyText
+<% 1.upto(100) do |i| %>
+res_yield_one_<%= i %>:
+  content: Content of ResYield One <%= i %>
   read: false
-  recipe_id: 
+  recipe: r_one_for_user_one
+  created_at: <%= base_time + i %>
+<% end %>
+
+<% 1.upto(100) do |i| %>
+res_yield_two_<%= i %>:
+  content: Content of ResYield Two <%= i %>
+  read: false
+  recipe: r_two_for_user_one
+  created_at: <%= base_time + i + 200 %>
+<% end %>
+
+<% 1.upto(100) do |i| %>
+res_yield_three_<%= i %>:
+  content: Content of ResYield Three <%= i %>
+  read: false
+  recipe: r_three_for_user_one
+  created_at: <%= base_time + i + 400 %>
+<% end %>
