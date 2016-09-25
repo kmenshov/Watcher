@@ -80,6 +80,7 @@ class ResGroupsControllerTest < ActionController::TestCase
     assert_no_difference('ResGroup.count') do
       post :create, res_group: { name: new_group_name }
     end
+    assert_template 'res_groups/new'
     assert_not_nil flash
   end
 
@@ -145,6 +146,12 @@ class ResGroupsControllerTest < ActionController::TestCase
     assert_login_required
   end
 
+  test "should not get edit for default group" do
+    login_as @user_one
+    get :edit, id: res_groups(:default_group_for_user_one).id
+    assert_redirected_with_flash_to res_groups_url
+  end
+
 # --- Update ---
 
   test "should update own group" do
@@ -175,6 +182,24 @@ class ResGroupsControllerTest < ActionController::TestCase
     gname = 'Updated Group'
     patch :update, id: @res_group, res_group: { name: gname }
     assert_login_required
+    assert_not_equal @res_group.reload.name, gname
+  end
+
+  test "should not update default group" do
+    login_as @user_one
+    gname = 'Updated Group'
+    group = res_groups(:default_group_for_user_one)
+    patch :update, id: group, res_group: { name: gname }
+    assert_redirected_with_flash_to res_groups_url
+    assert_not_equal group.reload.name, gname
+  end
+
+  test "should not update group to default name" do
+    login_as @user_one
+    gname = Rails.configuration.res_group_reserved_names[0]
+    patch :update, id: @res_group, res_group: { name: gname }
+    assert_template 'res_groups/edit'
+    assert_not_nil flash
     assert_not_equal @res_group.reload.name, gname
   end
 
@@ -209,6 +234,15 @@ class ResGroupsControllerTest < ActionController::TestCase
       delete :destroy, id: @res_group
     end
     assert_login_required
+  end
+
+  test "should not destroy default group" do
+    login_as @user_one
+    group = res_groups(:default_group_for_user_one)
+    assert_no_difference('ResGroup.count') do
+      delete :destroy, id: group
+    end
+    assert_redirected_with_flash_to res_groups_url
   end
 
 end

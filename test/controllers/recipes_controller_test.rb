@@ -49,6 +49,17 @@ class RecipesControllerTest < ActionController::TestCase
     assert_login_required
   end
 
+  test "should filter recipes" do
+    login_as @user_one
+    res_group = res_groups(:group_one_for_user_one)
+    recipes = Recipe.where(res_group: res_group)
+    get :index, res_group_id: res_group.id
+    assert_response :success
+    assert_template 'recipes/index'
+    assert_equal  assigns(:recipes).order(:id).pluck(:id),
+                  recipes.order(:id).pluck(:id)
+  end
+
 # --- New ---
 
   test "should get new" do

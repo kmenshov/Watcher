@@ -14,3 +14,8 @@ user_two:
   email: user_two@example.com
   password_digest: <%= to_digest('password') %>
   admin: false
+
+user_three:
+  email: user_three@example.com
+  password_digest: <%= to_digest('password') %>
+  admin: false

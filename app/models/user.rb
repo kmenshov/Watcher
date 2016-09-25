@@ -36,8 +36,13 @@ class User < ActiveRecord::Base
     return authenticated
   end
 
+  def default_group
+    ResGroup.where(user_id: self.id).find_by_name(Rails.configuration.res_group_reserved_names[0])
+  end
+
+
   def self.available_users_for(user)
-    if user.admin?
+    if user && user.admin?
       User.all
     else
       User.where(id: user)

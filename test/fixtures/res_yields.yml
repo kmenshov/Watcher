@@ -25,3 +25,11 @@ res_yield_three_<%= i %>:
   recipe: r_three_for_user_one
   created_at: <%= base_time + i + 400 %>
 <% end %>
+
+<% 1.upto(100) do |i| %>
+res_yield_four_<%= i %>:
+  content: Content of ResYield Four <%= i %>
+  read: false
+  recipe: r_two_for_user_two
+  created_at: <%= base_time + i + 600 %>
+<% end %>

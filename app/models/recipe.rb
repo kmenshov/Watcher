@@ -5,7 +5,7 @@ class Recipe < ActiveRecord::Base
   has_many :res_yields, dependent: :delete_all
 
   validates :name, :url, :content, presence: true
-  validate :ensure_proper_group_id
+  validates :res_group, presence: true
 
   #check the page from self.url to see which yields it produces right now
   def see_yields
@@ -28,7 +28,7 @@ class Recipe < ActiveRecord::Base
   end
 
   def user
-    User.find_by_id(ResGroup.find_by_id(self.res_group_id).user_id)
+    self.res_group.user if ResGroup.find_by_id(self.res_group_id)
   end
 
   def self.available_recipes_for(user, other_user_id: nil, res_group_id: nil)
@@ -52,13 +52,5 @@ class Recipe < ActiveRecord::Base
       end
     end
   end
-
-  private
-
-    def ensure_proper_group_id
-      unless ResGroup.available_groups_for(self.user).ids.include? self.res_group_id
-        self.res_group_id = self.default_group.id
-      end
-    end
 
 end
