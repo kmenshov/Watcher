@@ -92,6 +92,41 @@ class ResGroupsControllerTest < ActionController::TestCase
     assert_login_required
   end
 
+
+  def should_ensure_correct_user_while_creating(incorrect_user_id)
+    login_as @user_one
+    new_group_name = 'New Group'
+
+    assert_difference('ResGroup.count') do
+      post :create, res_group: { name: new_group_name,
+                                 user_id: incorrect_user_id }
+    end
+    assert_redirected_to res_group_path(assigns(:res_group))
+
+    assert ResGroup.exists?(name: new_group_name,
+                            user_id: @user_one.id)
+
+    assert_equal ResGroup.find(assigns(:res_group).id).user_id, @user_one.id
+  end
+
+
+  test "should create when user id is incorrect" do
+    should_ensure_correct_user_while_creating 'some_string'
+  end
+
+  test "should create when user id is inexistent" do
+    begin
+      u = rand(100) + 1
+    end while User.exists?(u)
+    should_ensure_correct_user_while_creating u
+  end
+
+  test "should create when user id is from different user" do
+    should_ensure_correct_user_while_creating users(:user_two).id
+    should_ensure_correct_user_while_creating users(:user_two).id
+  end
+
+
 # --- Show ---
 
   test "should show own group" do
@@ -165,9 +200,12 @@ class ResGroupsControllerTest < ActionController::TestCase
   test "should update group by admin" do
     login_as @admin
     gname = 'Updated Group'
-    patch :update, id: @res_group, res_group: { name: gname }
-    assert_redirected_to res_group_path(assigns(:res_group))
-    assert_equal @res_group.reload.name, gname
+    patch :update, id: @res_group, res_group: { name: gname,
+                                                user_id: @res_group.user_id }
+    assert_redirected_to res_group_path(@res_group)
+    @res_group.reload
+    assert_equal @res_group.name, gname
+    assert_equal @res_group.user_id, @user_one.id
   end
 
   test "should not update group by others" do

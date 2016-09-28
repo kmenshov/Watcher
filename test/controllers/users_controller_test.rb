@@ -141,7 +141,7 @@ class UsersControllerTest < ActionController::TestCase
     login_as @admin
     email = 'updated@example.com'
     patch :update, id: @user_one, user: { email: email, password: '', password_confirmation: '' }
-    assert_redirected_to user_path(assigns(:user))
+    assert_redirected_to user_path(@user_one)
     assert_equal @user_one.reload.email, email
   end
 
@@ -149,7 +149,7 @@ class UsersControllerTest < ActionController::TestCase
     login_as @user_one
     email = 'updated@example.com'
     patch :update, id: @user_one, user: { email: email, password: '', password_confirmation: '' }
-    assert_redirected_to user_path(assigns(:user))
+    assert_redirected_to user_path(@user_one)
     assert_equal @user_one.reload.email, email
   end
 

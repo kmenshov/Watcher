@@ -4,7 +4,7 @@ class RecipesControllerTest < ActionController::TestCase
   setup do
     @user_one       = users(:user_one)
     @admin          = users(:admin)
-    @recipe_one_one = recipes(:r_one_for_user_one)
+    @recipe_one_one = recipes(:r_two_for_user_one)
   end
 
 # --- Index ---
@@ -81,7 +81,7 @@ class RecipesControllerTest < ActionController::TestCase
     new_recipe_name = 'New Recipe'
     new_recipe_url = 'https://www.facebook.com/'
     new_recipe_content = 'New Content'
-    group = res_groups(:group_one_for_user_one)
+    group = res_groups(:group_two_for_user_one)
     assert_difference('Recipe.count') do
       post :create, recipe: { content: new_recipe_content,
                               name: new_recipe_name,
@@ -105,6 +105,48 @@ class RecipesControllerTest < ActionController::TestCase
     end
     assert_login_required
   end
+
+
+  def should_ensure_default_group_while_creating(incorrect_id)
+    login_as @user_one
+    new_recipe_name = 'New Recipe'
+    new_recipe_url = 'https://www.facebook.com/'
+    new_recipe_content = 'New Content'
+
+    assert_difference('Recipe.count') do
+      post :create, recipe: { content: new_recipe_content,
+                              name: new_recipe_name,
+                              url: new_recipe_url,
+                              res_group_id: incorrect_id }
+    end
+    assert_redirected_to recipe_path(assigns(:recipe))
+
+    assert Recipe.exists?(content: new_recipe_content,
+                          name: new_recipe_name,
+                          url: new_recipe_url,
+                          res_group_id: res_groups(:default_group_for_user_one).id)
+
+    assert_equal Recipe.find(assigns(:recipe).id).res_group_id,
+                 res_groups(:default_group_for_user_one).id
+  end
+
+
+  test "should create in default group when group id is incorrect" do
+    should_ensure_default_group_while_creating 'some_string'
+  end
+
+  test "should create in default group when group id is inexistent" do
+    begin
+      rg = rand(100) + 1
+    end while ResGroup.exists?(rg)
+    should_ensure_default_group_while_creating rg
+  end
+
+  test "should create in default group when group id is from different user" do
+    should_ensure_default_group_while_creating res_groups(:default_group_for_user_two).id
+    should_ensure_default_group_while_creating res_groups(:group_one_for_user_two).id
+  end
+
 
 # --- Show ---
 
@@ -167,16 +209,17 @@ class RecipesControllerTest < ActionController::TestCase
     u_recipe_name = 'Updated Recipe'
     u_recipe_url = 'https://www.facebook.com/'
     u_recipe_content = 'Updated Content'
-    group = res_groups(:group_one_for_user_one)
+    group = res_groups(:group_two_for_user_one)
     patch :update, id: @recipe_one_one, recipe: { content: u_recipe_content,
                                         name: u_recipe_name,
                                         url: u_recipe_url,
                                         res_group_id: group }
-    assert_redirected_to recipe_path(assigns(:recipe))
+    assert_redirected_to recipe_path(@recipe_one_one)
     @recipe_one_one.reload
     assert_equal @recipe_one_one.content, u_recipe_content
     assert_equal @recipe_one_one.name, u_recipe_name
     assert_equal @recipe_one_one.url, u_recipe_url
+    assert_equal @recipe_one_one.res_group_id, res_groups(:group_two_for_user_one).id
   end
 
   test "should update recipe by admin" do
@@ -184,16 +227,17 @@ class RecipesControllerTest < ActionController::TestCase
     u_recipe_name = 'Updated Recipe'
     u_recipe_url = 'https://www.facebook.com/'
     u_recipe_content = 'Updated Content'
-    group = res_groups(:group_one_for_user_one)
+    group = res_groups(:group_two_for_user_one)
     patch :update, id: @recipe_one_one, recipe: { content: u_recipe_content,
                                         name: u_recipe_name,
                                         url: u_recipe_url,
                                         res_group_id: group }
-    assert_redirected_to recipe_path(assigns(:recipe))
+    assert_redirected_to recipe_path(@recipe_one_one)
     @recipe_one_one.reload
     assert_equal @recipe_one_one.content, u_recipe_content
     assert_equal @recipe_one_one.name, u_recipe_name
     assert_equal @recipe_one_one.url, u_recipe_url
+    assert_equal @recipe_one_one.res_group_id, res_groups(:group_two_for_user_one).id
   end
 
   test "should not update recipe by others" do
@@ -201,7 +245,7 @@ class RecipesControllerTest < ActionController::TestCase
     u_recipe_name = 'Updated Recipe'
     u_recipe_url = 'https://www.facebook.com/'
     u_recipe_content = 'Updated Content'
-    group = res_groups(:group_one_for_user_one)
+    group = res_groups(:group_two_for_user_one)
     patch :update, id: @recipe_one_one, recipe: { content: u_recipe_content,
                                         name: u_recipe_name,
                                         url: u_recipe_url,
@@ -211,13 +255,14 @@ class RecipesControllerTest < ActionController::TestCase
     assert_not_equal @recipe_one_one.content, u_recipe_content
     assert_not_equal @recipe_one_one.name, u_recipe_name
     assert_not_equal @recipe_one_one.url, u_recipe_url
+    assert_equal @recipe_one_one.res_group_id, res_groups(:group_one_for_user_one).id
   end
 
   test "should not update recipe by not logged in" do
     u_recipe_name = 'Updated Recipe'
     u_recipe_url = 'https://www.facebook.com/'
     u_recipe_content = 'Updated Content'
-    group = res_groups(:group_one_for_user_one)
+    group = res_groups(:group_two_for_user_one)
     patch :update, id: @recipe_one_one, recipe: { content: u_recipe_content,
                                         name: u_recipe_name,
                                         url: u_recipe_url,
@@ -227,7 +272,47 @@ class RecipesControllerTest < ActionController::TestCase
     assert_not_equal @recipe_one_one.content, u_recipe_content
     assert_not_equal @recipe_one_one.name, u_recipe_name
     assert_not_equal @recipe_one_one.url, u_recipe_url
+    assert_equal @recipe_one_one.res_group_id, res_groups(:group_one_for_user_one).id
   end
+
+
+  def should_ensure_default_group_while_updating(incorrect_id)
+    login_as @user_one
+    u_recipe_name = 'Updated Recipe'
+    u_recipe_url = 'https://www.facebook.com/'
+    u_recipe_content = 'Updated Content'
+
+    patch :update, id: @recipe_one_one, recipe: { content: u_recipe_content,
+                                        name: u_recipe_name,
+                                        url: u_recipe_url,
+                                        res_group_id: incorrect_id }
+
+    assert_redirected_to recipe_path(@recipe_one_one)
+
+    @recipe_one_one.reload
+    assert_equal @recipe_one_one.content, u_recipe_content
+    assert_equal @recipe_one_one.name, u_recipe_name
+    assert_equal @recipe_one_one.url, u_recipe_url
+    assert_equal @recipe_one_one.res_group_id, res_groups(:default_group_for_user_one).id
+  end
+
+
+  test "should update to default group when group id is incorrect" do
+    should_ensure_default_group_while_updating 'some_string'
+  end
+
+  test "should update to default group when group id is inexistent" do
+    begin
+      rg = rand(100) + 1
+    end while ResGroup.exists?(rg)
+    should_ensure_default_group_while_updating rg
+  end
+
+  test "should update to default group when group id is from different user" do
+    should_ensure_default_group_while_updating res_groups(:default_group_for_user_two).id
+    should_ensure_default_group_while_updating res_groups(:group_one_for_user_two).id
+  end
+
 
 # --- Destroy ---
 

@@ -81,6 +81,11 @@ class RecipesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def recipe_params
+      # ensure correct group:
+      unless ResGroup.available_groups_for(current_user).pluck(:id).include? params[:recipe][:res_group_id].to_i
+        params[:recipe][:res_group_id] = current_user.default_group.id
+      end
+
       params.require(:recipe).permit(:name, :url, :content, :res_group_id)
     end
 end

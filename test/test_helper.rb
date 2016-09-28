@@ -22,7 +22,12 @@ class ActiveSupport::TestCase
   # Add more helper methods to be used by all tests here...
 
   def login_as(user)
-    session[:user_id] = user.id
+
+    if defined?(post_via_redirect) #i.e. if integration test
+      post login_path, session: { email: user.email, password: 'password' }
+    else
+      session[:user_id] = user.id
+    end
   end
 
   def assert_redirected_with_flash_to(url)

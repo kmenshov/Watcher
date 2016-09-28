@@ -78,7 +78,12 @@ class ResGroupsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def res_group_params
-      params.require(:res_group).permit(:name).merge(user_id: current_user.id)
+      # ensure correct user:
+      unless User.available_users_for(current_user).pluck(:id).include? params[:res_group][:user_id].to_i
+        params[:res_group][:user_id] = current_user.id
+      end
+
+      params.require(:res_group).permit(:name, :user_id)
     end
 
     def read_only_record
