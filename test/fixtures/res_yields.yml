@@ -2,7 +2,7 @@
 
 <% base_time = 1.year.ago %>
 
-<% 1.upto(100) do |i| %>
+<% 100.times do |i| %>
 res_yield_one_<%= i %>:
   content: Content of ResYield One <%= i %>
   read: false
@@ -10,7 +10,7 @@ res_yield_one_<%= i %>:
   created_at: <%= base_time + i %>
 <% end %>
 
-<% 1.upto(100) do |i| %>
+<% 100.times do |i| %>
 res_yield_two_<%= i %>:
   content: Content of ResYield Two <%= i %>
   read: false
@@ -18,7 +18,7 @@ res_yield_two_<%= i %>:
   created_at: <%= base_time + i + 200 %>
 <% end %>
 
-<% 1.upto(100) do |i| %>
+<% 100.times do |i| %>
 res_yield_three_<%= i %>:
   content: Content of ResYield Three <%= i %>
   read: false
@@ -26,7 +26,7 @@ res_yield_three_<%= i %>:
   created_at: <%= base_time + i + 400 %>
 <% end %>
 
-<% 1.upto(100) do |i| %>
+<% 100.times do |i| %>
 res_yield_four_<%= i %>:
   content: Content of ResYield Four <%= i %>
   read: false
